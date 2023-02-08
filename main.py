@@ -12,6 +12,11 @@ import time
 top_bottom_leds = 10
 left_right_leds = 5
 
+def screenshot():
+    image = pyautogui.screenshot()
+    image = np.array(image)
+    return image, image.shape
+
 def plot(image, axis = 'off'):
     plt.imshow(image)
     plt.axis(axis)
@@ -40,28 +45,3 @@ def color_processing(top_bottom_leds, left_right_leds, image_arr):
     for i in range(top_bottom_leds):
         image_slice = image_arr[(i*hor_square_dims):((i+1)*hor_square_dims),0:hor_square_dims,:]
 
-
-# for i in range(10):
-#     image = pyautogui.screenshot()
-#     image_arr = np.array(image)
-#     dims = image_arr.shape
-#     avg_color_row = np.average(image_arr, axis=0)
-#     avg_color  = np.average(avg_color_row, axis=0)
-#     avg_color_img = np.ones((1920, 1080, 3), dtype=np.uint8)
-#     avg_color_img[:,:] = avg_color 
-#     plt.imshow(avg_color_img)
-#     plt.axis('off')
-#     plt.show()
-
-#     time.sleep(3)
-    
-
-
-image = pyautogui.screenshot()
-image_arr = np.array(image)
-print(image_arr.shape)
-image_arr = image_arr[0:99,0:99,:]
-print(image_arr.shape)
-plt.imshow(image_arr)
-plt.axis('off')
-plt.show()
