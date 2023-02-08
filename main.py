@@ -12,18 +12,28 @@ import time
 top_bottom_leds = 10
 left_right_leds = 5
 
+def avg_color_img(avg_color, dims =(100,100,3)):
+    avg_color_img = np.ones(dims, dtype=np.uint8)
+    avg_color_img[:,:] = avg_color 
+    return avg_color_img
+
+def avg_color(image):
+    avg_color_row = np.average(image, axis=0)
+    avg_color  = np.average(avg_color_row, axis=0)       
+    return avg_color
+
+
 def color_processing(top_bottom_leds, left_right_leds, image_arr):
     top_colors = []
     bottom_colors = []
     left_colors = []
     right_colors = []
-    (horizontal, vertical, RGB) = image_arr.shape
-    hor_square_dims = horizontal/top_bottom_leds
-    ver_square_dims = vertical/left_right_leds
+    (vertical, horizontal, RGB) = image_arr.shape
+    hor_square_dims = horizontal//top_bottom_leds
+    ver_square_dims = vertical//left_right_leds
 
     for i in range(top_bottom_leds):
-        
-        image_slice = image_arr[]
+        image_slice = image_arr[(i*hor_square_dims):((i+1)*hor_square_dims),0:hor_square_dims,:]
 
 
 # for i in range(10):
