@@ -23,7 +23,8 @@ import time
 
 image = pyautogui.screenshot()
 image_arr = np.array(image)
-image_arr = image_arr[100,100,:].reshape((100,100,3))
+print(image_arr.shape)
+image_arr = image_arr[0:99,0:99,:]
 print(image_arr.shape)
 plt.imshow(image_arr)
 plt.axis('off')
