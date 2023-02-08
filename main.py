@@ -12,6 +12,11 @@ import time
 top_bottom_leds = 10
 left_right_leds = 5
 
+def plot(image, axis = 'off'):
+    plt.imshow(image)
+    plt.axis(axis)
+    plt.show()    
+
 def avg_color_img(avg_color, dims =(100,100,3)):
     avg_color_img = np.ones(dims, dtype=np.uint8)
     avg_color_img[:,:] = avg_color 
