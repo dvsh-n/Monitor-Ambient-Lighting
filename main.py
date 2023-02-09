@@ -10,7 +10,7 @@ import time
 
 # Total number of LEDs
 top_bottom_leds = 10
-left_right_leds = 5
+left_right_leds = 10
 
 def screenshot():
     image = pyautogui.screenshot()
@@ -38,7 +38,7 @@ def color_processing(top_bottom_leds, left_right_leds, image_arr):
     bottom_colors = []
     left_colors = []
     right_colors = []
-    (vertical, horizontal, RGB) = image_arr.shape
+    (vertical, horizontal, _) = image_arr.shape
     hor_square_dims = horizontal//top_bottom_leds
     ver_square_dims = vertical//left_right_leds
 
@@ -47,13 +47,17 @@ def color_processing(top_bottom_leds, left_right_leds, image_arr):
         top_colors.append(avg_color(top_image_slice))
         bottom_image_slice = image_arr[(vertical-hor_square_dims):vertical,(i*hor_square_dims):((i+1)*hor_square_dims),:]
         bottom_colors.append(avg_color(bottom_image_slice))
+    
+    for i in range(left_right_leds):
+        left_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),0:ver_square_dims,:]
+        left_colors.append(left_image_slice)
 
-    return top_colors
+    return left_colors
 
 time.sleep(3)
 image, dims = screenshot()
 colors = color_processing(top_bottom_leds=top_bottom_leds, left_right_leds=left_right_leds, image_arr=image)
-for i in range(top_bottom_leds):
-    plot(avg_color_img(colors[i]))
+for i in range(left_right_leds):
+    plot(colors[i])
 
 
