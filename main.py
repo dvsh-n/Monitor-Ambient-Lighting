@@ -10,7 +10,7 @@ import time
 
 # Total number of LEDs
 top_bottom_leds = 10
-left_right_leds = 10
+left_right_leds = 5
 
 def screenshot():
     image = pyautogui.screenshot()
@@ -51,8 +51,10 @@ def color_processing(top_bottom_leds, left_right_leds, image_arr):
     for i in range(left_right_leds):
         left_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),0:ver_square_dims,:]
         left_colors.append(left_image_slice)
+        right_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),(horizontal-ver_square_dims):horizontal,:]
+        right_colors.append(right_image_slice)
 
-    return left_colors
+    return right_colors
 
 time.sleep(3)
 image, dims = screenshot()
