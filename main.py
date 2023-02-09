@@ -43,16 +43,17 @@ def color_processing(top_bottom_leds, left_right_leds, image_arr):
     ver_square_dims = vertical//left_right_leds
 
     for i in range(top_bottom_leds):
-        image_slice = image_arr[0:hor_square_dims,(i*hor_square_dims):((i+1)*hor_square_dims),:]
-        top_colors.append(image_slice)
+        top_image_slice = image_arr[0:hor_square_dims,(i*hor_square_dims):((i+1)*hor_square_dims),:]
+        top_colors.append(avg_color(top_image_slice))
+        
 
     return top_colors
 
 time.sleep(3)
 image, dims = screenshot()
-images = color_processing(top_bottom_leds=top_bottom_leds, left_right_leds=left_right_leds, image_arr=image)
+colors = color_processing(top_bottom_leds=top_bottom_leds, left_right_leds=left_right_leds, image_arr=image)
 for i in range(top_bottom_leds):
-    plot(avg_color_img(avg_color(images[i])))
+    plot(avg_color_img(colors[i]))
 
 
 
