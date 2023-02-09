@@ -33,33 +33,25 @@ def avg_color(image):
     return avg_color
 
 
-def color_processing(top_bottom_leds, left_right_leds, image_arr):
-    top_colors = []
-    bottom_colors = []
-    left_colors = []
-    right_colors = []
+def slicing_img(top_bottom_leds, left_right_leds, image_arr):
+    slices = [[], [], [], []] # 0:top 1:bottom 2:left 3:right
+
     (vertical, horizontal, _) = image_arr.shape
     hor_square_dims = horizontal//top_bottom_leds
     ver_square_dims = vertical//left_right_leds
 
     for i in range(top_bottom_leds):
         top_image_slice = image_arr[0:hor_square_dims,(i*hor_square_dims):((i+1)*hor_square_dims),:]
-        top_colors.append(avg_color(top_image_slice))
+        slices[0].append(avg_color(top_image_slice))
         bottom_image_slice = image_arr[(vertical-hor_square_dims):vertical,(i*hor_square_dims):((i+1)*hor_square_dims),:]
-        bottom_colors.append(avg_color(bottom_image_slice))
+        slices[1].append(avg_color(bottom_image_slice))
     
     for i in range(left_right_leds):
         left_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),0:ver_square_dims,:]
-        left_colors.append(left_image_slice)
+        slices[2].append(left_image_slice)
         right_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),(horizontal-ver_square_dims):horizontal,:]
-        right_colors.append(right_image_slice)
+        slices[3].append(right_image_slice)
 
-    return right_colors
-
-time.sleep(3)
-image, dims = screenshot()
-colors = color_processing(top_bottom_leds=top_bottom_leds, left_right_leds=left_right_leds, image_arr=image)
-for i in range(left_right_leds):
-    plot(colors[i])
+    return slices
 
 
