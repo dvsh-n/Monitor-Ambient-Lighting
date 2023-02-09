@@ -42,9 +42,9 @@ def slicing_img(top_bottom_leds, left_right_leds, image_arr):
 
     for i in range(top_bottom_leds):
         top_image_slice = image_arr[0:hor_square_dims,(i*hor_square_dims):((i+1)*hor_square_dims),:]
-        slices[0].append(avg_color(top_image_slice))
+        slices[0].append(top_image_slice)
         bottom_image_slice = image_arr[(vertical-hor_square_dims):vertical,(i*hor_square_dims):((i+1)*hor_square_dims),:]
-        slices[1].append(avg_color(bottom_image_slice))
+        slices[1].append(bottom_image_slice)
     
     for i in range(left_right_leds):
         left_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),0:ver_square_dims,:]
@@ -53,5 +53,9 @@ def slicing_img(top_bottom_leds, left_right_leds, image_arr):
         slices[3].append(right_image_slice)
 
     return slices
+
+# image_arr, dims = screenshot()
+# slices = slicing_img(top_bottom_leds, left_right_leds, image_arr)
+# print(len(slices)) #4
 
 
