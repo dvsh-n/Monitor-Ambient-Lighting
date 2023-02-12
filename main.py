@@ -33,10 +33,8 @@ def avg_color(image):
     return avg_color
 
 
-def slicing_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0), slices = False): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
-    if slices:
-       slices = [[], [], [], []] # 0:top 1:bottom 2:left 3:right
-    colors = [[], [], [], []]
+def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0)): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
+    colors = [[], [], [], []]# 0:top 1:bottom 2:left 3:right
 
     (vertical, horizontal, _) = image_arr.shape
     hor_scn_sqr_dims = horizontal//top_bottom_leds 
@@ -46,43 +44,34 @@ def slicing_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0
         top_image_slice = image_arr[0:(hor_scn_sqr_dims+extra_slice[0]), # vertical
                                     (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), #horizontal
                                     :]
-        if slices: slices[0].append(top_image_slice)
         colors[0].append(avg_color(top_image_slice))
 
         bottom_image_slice = image_arr[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical, # vertical
                                         (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), # horizontal
                                         :]
-        if slices: slices[1].append(bottom_image_slice)
         colors[1].append(avg_color(bottom_image_slice))
     
     for i in range(left_right_leds):
         left_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                     0:(ver_scn_sqr_dims+extra_slice[1]), # horizontal
                                     :]
-        if slices: slices[2].append(left_image_slice)
         colors[2].append(avg_color(left_image_slice))
 
         right_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                         (horizontal-(ver_scn_sqr_dims+extra_slice[1])):horizontal, # horizontal
                                         :]
-        if slices: slices[3].append(right_image_slice)
         colors[3].append(avg_color(right_image_slice))
 
-    return slices
-
-def color_from_slices(slices):
-    colors = [[], [], [], []]
-    for i in range(len(slices)):
-        for j in range(len(slices[i])):
-            colors[i][j] = avg_color(slices[i][j])
-            print(0)
     return colors
+
 
 t1 = time.time()
 image_arr, dims = screenshot()
-slices = slicing_img(top_bottom_leds, left_right_leds, image_arr)
-colors = color_from_slices(slices)
+colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
 t2 = time.time()
-print(t2-t1)
+print(1/(t2-t1))
 
-
+'''
+log
+2/11/2023: 19 FPS
+'''
