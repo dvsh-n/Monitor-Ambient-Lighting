@@ -41,19 +41,23 @@ def slicing_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0
     ver_scn_sqr_dims = vertical//left_right_leds + extra_slice[1]
 
     for i in range(top_bottom_leds):
-        top_image_slice = image_arr[0:(hor_scn_sqr_dims+extra_slice[0])
-                                    ,(i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims)
-                                    ,:]
+        top_image_slice = image_arr[0:(hor_scn_sqr_dims+extra_slice[0]), # vertical
+                                    (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), #horizontal
+                                    :]
         slices[0].append(top_image_slice)
-        bottom_image_slice = image_arr[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical,
-                                        (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims)
-                                        ,:]
+        bottom_image_slice = image_arr[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical, # vertical
+                                        (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), # horizontal
+                                        :]
         slices[1].append(bottom_image_slice)
     
     for i in range(left_right_leds):
-        left_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims),0:ver_scn_sqr_dims,:]
+        left_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
+                                    0:(ver_scn_sqr_dims+extra_slice[1]), # horizontal
+                                    :]
         slices[2].append(left_image_slice)
-        right_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims),(horizontal-ver_scn_sqr_dims):horizontal,:]
+        right_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
+                                        (horizontal-(ver_scn_sqr_dims+extra_slice[1])):horizontal, # horizontal
+                                        :]
         slices[3].append(right_image_slice)
 
     return slices
