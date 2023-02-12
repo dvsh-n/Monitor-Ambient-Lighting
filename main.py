@@ -62,16 +62,18 @@ def slicing_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0
 
     return slices
 
-def limit_sub(b, a, limit = 0):
-    res = b-a
-    if res <= limit:
-        return 0
-    else:
-        return res
+def color_from_slices(slices):
+    colors = [[], [], [], []]
+    for i in range(len(slices)):
+        for j in range(len(slices[i])):
+            colors[i][j] = avg_color(slices[i][j])
+    return colors
 
-
-# image_arr, dims = screenshot()
-# slices = slicing_img(top_bottom_leds, left_right_leds, image_arr)
-# print(len(slices)) #4
+t1 = time.time()
+image_arr, dims = screenshot()
+slices = slicing_img(top_bottom_leds, left_right_leds, image_arr)
+colors = color_from_slices(slices)
+t2 = time.time()
+print(t2-t1)
 
 
