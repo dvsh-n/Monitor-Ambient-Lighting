@@ -54,6 +54,38 @@ def slicing_img(top_bottom_leds, left_right_leds, image_arr):
 
     return slices
 
+def limit_sub(b, a, limit = 0):
+    res = b-a
+    if res <= limit:
+        return 0
+    else:
+        return res
+
+
+def slicing_img2(top_bottom_leds, left_right_leds, image_arr, slice_dims = (100,100)):
+
+    (vertical, horizontal, _) = image_arr.shape
+    hor_div_dims = horizontal//top_bottom_leds
+    ver_div_dims = vertical//left_right_leds
+
+    hor_led_spacing = hor_div_dims//2 
+    ver_led_spacing = ver_div_dims//2
+
+    '''
+    x --->
+    y
+    |
+    |
+    \/
+    '''
+    hor_x = 0
+    ver_y = 0
+
+    for i in range(1, top_bottom_leds+1):
+        if i == 1:
+            top_image_slice = image_arr[0:slice_dims[0], limit_sub(i*hor_led_spacing, )]
+
+
 # image_arr, dims = screenshot()
 # slices = slicing_img(top_bottom_leds, left_right_leds, image_arr)
 # print(len(slices)) #4
