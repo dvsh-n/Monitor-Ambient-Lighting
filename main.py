@@ -33,23 +33,27 @@ def avg_color(image):
     return avg_color
 
 
-def slicing_img(top_bottom_leds, left_right_leds, image_arr):
+def slicing_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0)): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
     slices = [[], [], [], []] # 0:top 1:bottom 2:left 3:right
 
     (vertical, horizontal, _) = image_arr.shape
-    hor_square_dims = horizontal//top_bottom_leds
-    ver_square_dims = vertical//left_right_leds
+    hor_scn_sqr_dims = horizontal//top_bottom_leds 
+    ver_scn_sqr_dims = vertical//left_right_leds + extra_slice[1]
 
     for i in range(top_bottom_leds):
-        top_image_slice = image_arr[0:hor_square_dims,(i*hor_square_dims):((i+1)*hor_square_dims),:]
+        top_image_slice = image_arr[0:(hor_scn_sqr_dims+extra_slice[0])
+                                    ,(i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims)
+                                    ,:]
         slices[0].append(top_image_slice)
-        bottom_image_slice = image_arr[(vertical-hor_square_dims):vertical,(i*hor_square_dims):((i+1)*hor_square_dims),:]
+        bottom_image_slice = image_arr[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical,
+                                        (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims)
+                                        ,:]
         slices[1].append(bottom_image_slice)
     
     for i in range(left_right_leds):
-        left_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),0:ver_square_dims,:]
+        left_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims),0:ver_scn_sqr_dims,:]
         slices[2].append(left_image_slice)
-        right_image_slice = image_arr[(i*ver_square_dims):((i+1)*ver_square_dims),(horizontal-ver_square_dims):horizontal,:]
+        right_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims),(horizontal-ver_scn_sqr_dims):horizontal,:]
         slices[3].append(right_image_slice)
 
     return slices
@@ -60,30 +64,6 @@ def limit_sub(b, a, limit = 0):
         return 0
     else:
         return res
-
-
-def slicing_img2(top_bottom_leds, left_right_leds, image_arr, slice_dims = (100,100)):
-
-    (vertical, horizontal, _) = image_arr.shape
-    hor_div_dims = horizontal//top_bottom_leds
-    ver_div_dims = vertical//left_right_leds
-
-    hor_led_spacing = hor_div_dims//2 
-    ver_led_spacing = ver_div_dims//2
-
-    '''
-    x --->
-    y
-    |
-    |
-    \/
-    '''
-    hor_x = 0
-    ver_y = 0
-
-    for i in range(1, top_bottom_leds+1):
-        if i == 1:
-            top_image_slice = image_arr[0:slice_dims[0], limit_sub(i*hor_led_spacing, )]
 
 
 # image_arr, dims = screenshot()
