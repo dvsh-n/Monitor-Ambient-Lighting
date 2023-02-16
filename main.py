@@ -1,9 +1,11 @@
 import numpy as np
-import pyautogui
-import imutils
-import cv2
+# import pyautogui
+# import imutils
+# import cv2
 from matplotlib import pyplot as plt
 import time
+import dxcam
+from PIL import Image
 
 # PC screen dims = (1080,1920,3) 
 # Monitor Screen dims = (1440, 2560, 3)
@@ -12,9 +14,8 @@ import time
 top_bottom_leds = 10
 left_right_leds = 5
 
-def screenshot():
-    image = pyautogui.screenshot()
-    image = np.array(image)
+def screenshot(cam):
+    image = cam.grab()
     return image, image.shape
 
 def plot(image, axis = 'off'):
@@ -65,10 +66,12 @@ def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (
     return colors
 
 
+camera = dxcam.create(device_idx=0, output_idx=1)
+# colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
 t1 = time.time()
-image_arr, dims = screenshot()
-colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
+image_arr, dims = screenshot(camera)
 t2 = time.time()
+Image.fromarray(image_arr).show()
 print(1/(t2-t1))
 
 '''
