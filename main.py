@@ -66,12 +66,12 @@ def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (
     return colors
 
 
-camera = dxcam.create(device_idx=0, output_idx=1)
-# colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
+camera = dxcam.create(device_idx=0, output_idx=0)
 t1 = time.time()
 image_arr, dims = screenshot(camera)
+colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
 t2 = time.time()
-Image.fromarray(image_arr).show()
+# Image.fromarray(image_arr).show()
 print(1/(t2-t1))
 
 '''
