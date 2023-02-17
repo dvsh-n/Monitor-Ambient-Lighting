@@ -93,7 +93,7 @@ while(1):
     
     cmd = input()
     if (cmd):
-        write_ser(cmd)
+        write_ser(ESP32, cmd)
 
 
 # camera = dxcam.create(device_idx=0, output_idx=1)
