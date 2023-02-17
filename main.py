@@ -73,8 +73,13 @@ def write_ser(port, data):
     data += '\n'
     port.write(data.encode())
 
+def check_port(COM):
+    if COM.isopen():
+        print("port is open")
+
 ESP32 = port("COM9")
-print('com3 is open', ESP32.isOpen())
+
+print('com : ', ESP32.isOpen())
 
 while(1):
 
