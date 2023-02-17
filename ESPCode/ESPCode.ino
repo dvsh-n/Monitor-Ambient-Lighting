@@ -1,5 +1,6 @@
 #define MAX_BUFF_LEN 255
 #define onboard_led 2
+
 char c;
 char str[MAX_BUFF_LEN];
 uint8_t idx = 0;
@@ -25,8 +26,8 @@ void loop() {
       Serial.println(str);
     }
   }
-  if (str == "On\n")
-    digitalWrite(onboard_led, HIGH);
-  else
-    digitalWrite(onboard_led, LOW);
+  // if (str == "On\n")
+  //   digitalWrite(onboard_led, HIGH);
+  // else
+  //   digitalWrite(onboard_led, LOW);
 }

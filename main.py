@@ -73,8 +73,12 @@ def write_ser(port, data):
     data += '\n'
     port.write(data.encode())
 
+def read_ser(port, buffer = 255):
+    string = port.read(buffer)
+    return string.decode()
+
 def check_port(COM):
-    if COM.isopen():
+    if COM.isOpen():
         print("port is open")
     else:
         print("port open failed")
@@ -83,11 +87,13 @@ ESP32 = port("COM9")
 check_port(ESP32)
 
 while(1):
-
-    write_ser(ESP32, "On")
-    time.sleep(0.5)
-    write_ser(ESP32, "Off")
-    time.sleep(0.5)
+    string = read_ser(ESP32)
+    if (len(string)):
+        print(string)
+    
+    cmd = input()
+    if (cmd):
+        write_ser(cmd)
 
 
 # camera = dxcam.create(device_idx=0, output_idx=1)
