@@ -70,10 +70,14 @@ def port(COM):
     return serial.Serial(COM, 115200, timeout=1)
 
 def write_ser(port, data):
+    data += '\n'
     port.write(data.encode())
 
+ESP32 = port("COM9")
+print('com3 is open', ESP32.isOpen())
+
 while(1):
-    ESP32 = port("COM9")
+
     write_ser(ESP32, "Hello")
     time.sleep(1)
 
