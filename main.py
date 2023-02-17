@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 import time
 import dxcam
 from PIL import Image
+import serial
 
 # PC screen dims = (1080,1920,3) 
 # Monitor Screen dims = (1440, 2560, 3)
@@ -65,16 +66,24 @@ def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (
 
     return colors
 
+def port(COM):
+    return serial.Serial(COM, 115200, timeout=1)
 
-camera = dxcam.create(device_idx=0, output_idx=0)
-t1 = time.time()
-image_arr, dims = screenshot(camera)
-colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
-t2 = time.time()
+def write_ser(port, data):
+    port.write(data.encode())
+
+while(1):
+    ESP32 = port("COM9")
+    write_ser(ESP32, "Hello")
+    time.sleep(1)
+
+
+# camera = dxcam.create(device_idx=0, output_idx=1)
+# t1 = time.time()
+# image_arr, dims = screenshot(camera)
+# colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
+# t2 = time.time()
+# print(1/(t2-t1))
 # Image.fromarray(image_arr).show()
-print(1/(t2-t1))
 
-'''
-log
-2/11/2023: 19 FPS
-'''
+
