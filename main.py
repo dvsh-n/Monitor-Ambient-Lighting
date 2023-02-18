@@ -67,7 +67,7 @@ def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (
     return colors
 
 def port(COM):
-    return serial.Serial(COM, 115200, timeout=1)
+    return serial.Serial(COM, 921600, timeout=1)
 
 def write_ser(port, data, num_bytes_return = False):
     # data += '\n'
@@ -94,10 +94,7 @@ while(1):
     
     cmd = input()
     if (cmd):
-        t1 = time.time()
         write_ser(ESP32, cmd)
-        t2 = time.time()
-        print(1/(t2-t1))
 
 
 # camera = dxcam.create(device_idx=0, output_idx=1)
@@ -107,3 +104,5 @@ while(1):
 # t2 = time.time()
 # print(1/(t2-t1))
 # Image.fromarray(image_arr).show()
+# serial is very fast, no need to worry abot speed
+# baud rate is bits per second
