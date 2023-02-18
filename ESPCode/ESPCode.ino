@@ -16,13 +16,18 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   while (Serial.available()){
-    for (led_idx = 0; led_idx<LEDS ;led_idx++){
-      for (channel_idx = 0; channel_idx<3; channel_idx++){
-        c = Serial.read();
-        led_color[led_idx][channel_idx] = +c;
-      }
-  }
-    }
+    c = Serial.read();
 
+    if (channel_idx == 3){
+      channel_idx = 0;
+      led_idx++;
+    }
+    if (led_idx == LEDS) break;
+
+    led_color[led_idx][channel_idx] = +c;
+    channel_idx++;
+
+    Serial.println(c);
   }
+  if (led_color[1][2] == 57) digitalWrite(onboard_led, HIGH);
 }

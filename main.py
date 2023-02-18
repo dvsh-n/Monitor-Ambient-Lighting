@@ -106,3 +106,6 @@ while(1):
 # Image.fromarray(image_arr).show()
 # serial is very fast, no need to worry abot speed
 # baud rate is bits per second
+# topleds ~ 21
+# sideleds ~ 12
+# cout << +c; can be used to convert char to int
