@@ -16,23 +16,16 @@ void loop() {
   if (Serial.available()){
     c = Serial.read();
     
-    if (c != '\n')
-      str[idx++] = c;
+    if (c != '\n'){
+      str[idx] = c;
+      idx++;
+    }
     else{
       str[idx] = '\0';
       idx = 0;
 
       Serial.print("ESP: ");
       Serial.println(str);
-      if (str == "On\n"){
-        digitalWrite(onboard_led, HIGH);
-        Serial.println("True");
-      }
-      
-      else{
-        digitalWrite(onboard_led, LOW);
-        Serial.println("False");
-      }
 
     }
   }
