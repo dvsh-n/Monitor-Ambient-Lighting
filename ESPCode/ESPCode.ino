@@ -19,6 +19,4 @@ void loop() {
     Serial.println(c);
     Serial.println("end");
   }
-  delay(1000);
-
 }

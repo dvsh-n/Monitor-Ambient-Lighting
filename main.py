@@ -70,7 +70,7 @@ def port(COM):
     return serial.Serial(COM, 115200, timeout=1)
 
 def write_ser(port, data, num_bytes_return = False):
-    data += '\n'
+    # data += '\n'
     num_bytes = port.write(data.encode())
     if num_bytes_return: return num_bytes
 
@@ -94,7 +94,10 @@ while(1):
     
     cmd = input()
     if (cmd):
+        t1 = time.time()
         write_ser(ESP32, cmd)
+        t2 = time.time()
+        print(1/(t2-t1))
 
 
 # camera = dxcam.create(device_idx=0, output_idx=1)
