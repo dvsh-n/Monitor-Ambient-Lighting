@@ -24,10 +24,17 @@ void loop() {
 
       Serial.print("ESP: ");
       Serial.println(str);
+      if (str == "On\n"){
+        digitalWrite(onboard_led, HIGH);
+        Serial.println("True");
+      }
+      
+      else{
+        digitalWrite(onboard_led, LOW);
+        Serial.println("False");
+      }
+
     }
   }
-  // if (str == "On\n")
-  //   digitalWrite(onboard_led, HIGH);
-  // else
-  //   digitalWrite(onboard_led, LOW);
+
 }
