@@ -13,21 +13,12 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if (Serial.available()){
+  while (Serial.available()){
     c = Serial.read();
-    
-    if (c != '\n'){
-      str[idx] = c;
-      idx++;
-    }
-    else{
-      str[idx] = '\0';
-      idx = 0;
-
-      Serial.print("ESP: ");
-      Serial.println(str);
-
-    }
+    Serial.println("start");
+    Serial.println(c);
+    Serial.println("end");
   }
+  delay(1000);
 
 }

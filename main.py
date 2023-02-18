@@ -69,9 +69,10 @@ def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (
 def port(COM):
     return serial.Serial(COM, 115200, timeout=1)
 
-def write_ser(port, data):
+def write_ser(port, data, num_bytes_return = False):
     data += '\n'
-    port.write(data.encode())
+    num_bytes = port.write(data.encode())
+    if num_bytes_return: return num_bytes
 
 def read_ser(port, buffer = 255):
     string = port.read(buffer)
@@ -103,5 +104,3 @@ while(1):
 # t2 = time.time()
 # print(1/(t2-t1))
 # Image.fromarray(image_arr).show()
-
-
