@@ -6,6 +6,7 @@ char c;
 char led_color[LEDS][3];
 uint8_t led_idx = 0;
 uint8_t channel_idx = 0;
+bool full = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -18,6 +19,11 @@ void loop() {
   while (Serial.available()){
     c = Serial.read();
 
+    if (full) {
+      led_color = {0};
+      full = false;
+    }
+
     if (channel_idx == 3){
       channel_idx = 0;
       led_idx++;
@@ -26,6 +32,10 @@ void loop() {
 
     led_color[led_idx][channel_idx] = +c;
     channel_idx++;
+
+    if (channel_idx == 2 && led_idx = LEDS-1){
+      full = true;
+    }
 
     Serial.println(c);
   }
