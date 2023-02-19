@@ -12,8 +12,8 @@ import serial
 # Monitor Screen dims = (1440, 2560, 3)
 
 # Total number of LEDs
-top_bottom_leds = 10
-left_right_leds = 5
+top_bottom_leds = 21
+left_right_leds = 12
 
 def screenshot(cam):
     image = cam.grab()
@@ -85,6 +85,13 @@ def check_port(COM):
         print("port is open")
     else:
         print("port open failed")
+
+def send(port, colors, order = [1, 2, 0, 3]):
+    for i in order:
+        for j in colors[i]:
+            for k in j:
+                write_ser(port, k)
+
 
 ESP32 = port("COM9")
 check_port(ESP32)

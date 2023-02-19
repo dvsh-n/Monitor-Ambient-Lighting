@@ -31,3 +31,5 @@ void loop() {
   }
   if (led_color[1][2] == 57) digitalWrite(onboard_led, HIGH);
 }
+// Whenever gets new data, updates
+// Clears the array when new data comes
