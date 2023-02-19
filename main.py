@@ -29,9 +29,11 @@ def avg_color_img(avg_color, dims = (100, 100, 3)):
     avg_color_img[:,:] = avg_color 
     return avg_color_img
 
-def avg_color(image):
+def avg_color(image, type_char = True):
     avg_color_row = np.average(image, axis=0)
-    avg_color  = np.average(avg_color_row, axis=0)       
+    avg_color  = np.average(avg_color_row, axis=0)     
+    avg_color = np.floor(avg_color)
+    if type_char: avg_color[0], avg_color[1], avg_color[2] = chr(avg_color[0]), chr(avg_color[1]), chr(avg_color[2])
     return avg_color
 
 
