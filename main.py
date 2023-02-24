@@ -37,36 +37,40 @@ def avg_color(image, type_char = True):
     return avg_color
 
 
-def colors_from_img(top_bottom_leds, left_right_leds, image_arr, extra_slice = (0, 0)): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
+def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0)): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
     colors = [[], [], [], []]# 0:top 1:bottom 2:left 3:right
 
-    (vertical, horizontal, _) = image_arr.shape
+    (vertical, horizontal, _) = image.shape
     hor_scn_sqr_dims = horizontal//top_bottom_leds 
     ver_scn_sqr_dims = vertical//left_right_leds + extra_slice[1]
 
     for i in range(top_bottom_leds):
-        top_image_slice = image_arr[0:(hor_scn_sqr_dims+extra_slice[0]), # vertical
+        top_image_slice = image[0:(hor_scn_sqr_dims+extra_slice[0]), # vertical
                                     (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), #horizontal
                                     :]
         colors[0].append(avg_color(top_image_slice))
 
-        bottom_image_slice = image_arr[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical, # vertical
+        bottom_image_slice = image[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical, # vertical
                                         (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), # horizontal
                                         :]
         colors[1].append(avg_color(bottom_image_slice))
     
     for i in range(left_right_leds):
-        left_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
+        left_image_slice = image[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                     0:(ver_scn_sqr_dims+extra_slice[1]), # horizontal
                                     :]
         colors[2].append(avg_color(left_image_slice))
 
-        right_image_slice = image_arr[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
+        right_image_slice = image[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                         (horizontal-(ver_scn_sqr_dims+extra_slice[1])):horizontal, # horizontal
                                         :]
         colors[3].append(avg_color(right_image_slice))
 
     return colors
+def black_border_crop(image):
+    avg_color_col = np.average(image, axis=1)
+
+
 
 def port(COM):
     return serial.Serial(COM, 921600, timeout=1)
@@ -108,11 +112,11 @@ while(1):
 
 # camera = dxcam.create(device_idx=0, output_idx=1)
 # t1 = time.time()
-# image_arr, dims = screenshot(camera)
-# colors = colors_from_img(top_bottom_leds, left_right_leds, image_arr)
+# image, dims = screenshot(camera)
+# colors = colors_from_img(top_bottom_leds, left_right_leds, image)
 # t2 = time.time()
 # print(1/(t2-t1))
-# Image.fromarray(image_arr).show()
+# Image.fromarray(image).show()
 # serial is very fast, no need to worry abot speed
 # baud rate is bits per second
 # topleds ~ 21
