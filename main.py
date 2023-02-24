@@ -65,11 +65,11 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
 
     return colors
 
-def black_border_crop(image):
+def black_border_crop(image, threshold = [10,10,10]):
     avg_color_col = np.average(image, axis=1)
     (vertical, horizontal, _) = image.shape
     width = 0
-    threshold = np.array([10,10,10])
+    threshold = np.array(threshold)
     for i in range(len(avg_color_col)):
         if (avg_color_col[i] <= threshold).all():
             width = i
@@ -83,8 +83,7 @@ def port(COM):
     return serial.Serial(COM, 921600, timeout=1)
 
 def write_ser(port, data, num_bytes_return = False):
-    # data += '\n'
-    num_bytes = port.write(data.encode())
+    num_bytes = port.write(bytearray(data))
     if num_bytes_return: return num_bytes
 
 def read_ser(port, buffer = 255):
@@ -100,8 +99,7 @@ def check_port(COM):
 def send(port, colors, order = [1, 2, 0, 3]):
     for i in order:
         for j in colors[i]:
-            for k in j:
-                write_ser(port, k)
+            write_ser(port, j)
 
 
 # ESP32 = port("COM9")
