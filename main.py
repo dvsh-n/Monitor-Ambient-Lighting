@@ -1,7 +1,5 @@
 import numpy as np
-# import pyautogui
-# import imutils
-# import cv2
+
 from matplotlib import pyplot as plt
 import time
 import dxcam
@@ -71,9 +69,9 @@ def black_border_crop(image):
     avg_color_col = np.average(image, axis=1)
     (vertical, horizontal, _) = image.shape
     width = 0
-    zeros = np.zeros(3)
+    threshold = np.array([10,10,10])
     for i in range(len(avg_color_col)):
-        if (avg_color_col[i] == zeros).all():
+        if (avg_color_col[i] <= threshold).all():
             width = i
         else:
             break    
@@ -117,9 +115,9 @@ def send(port, colors, order = [1, 2, 0, 3]):
 #     cmd = input()
 #     if (cmd):
 #         write_ser(ESP32, cmd)
+camera = dxcam.create(device_idx=0, output_idx=0)
 
 while (1):
-    camera = dxcam.create(device_idx=0, output_idx=0)
     # t1 = time.time()
     image, dims = screenshot(camera)
     image = black_border_crop(image)
