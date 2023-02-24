@@ -37,7 +37,7 @@ def avg_color(image, type_char = True):
     return avg_color
 
 
-def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0)): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
+def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0), type_char = True): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
     colors = [[], [], [], []]# 0:top 1:bottom 2:left 3:right
 
     (vertical, horizontal, _) = image.shape
@@ -48,23 +48,23 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
         top_image_slice = image[0:(hor_scn_sqr_dims+extra_slice[0]), # vertical
                                     (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), #horizontal
                                     :]
-        colors[0].append(avg_color(top_image_slice))
+        colors[0].append(avg_color(top_image_slice, type_char))
 
         bottom_image_slice = image[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical, # vertical
                                         (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), # horizontal
                                         :]
-        colors[1].append(avg_color(bottom_image_slice))
+        colors[1].append(avg_color(bottom_image_slice, type_char))
     
     for i in range(left_right_leds):
         left_image_slice = image[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                     0:(ver_scn_sqr_dims+extra_slice[1]), # horizontal
                                     :]
-        colors[2].append(avg_color(left_image_slice))
+        colors[2].append(avg_color(left_image_slice, type_char))
 
         right_image_slice = image[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                         (horizontal-(ver_scn_sqr_dims+extra_slice[1])):horizontal, # horizontal
                                         :]
-        colors[3].append(avg_color(right_image_slice))
+        colors[3].append(avg_color(right_image_slice, type_char))
 
     return colors
 
