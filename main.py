@@ -67,8 +67,17 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
         colors[3].append(avg_color(right_image_slice))
 
     return colors
+
 def black_border_crop(image):
     avg_color_col = np.average(image, axis=1)
+    (vertical, horizontal, _) = image.shape
+    width = 0
+    for i in range(len(avg_color_col)):
+        if avg_color_col[i] == [0,0,0]:
+            width = i
+        else:
+            break    
+    return image[width:(vertical-width),:,:]   
 
 
 
