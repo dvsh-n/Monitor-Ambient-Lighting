@@ -29,15 +29,14 @@ def avg_color_img(avg_color, dims = (100, 100, 3)):
     avg_color_img[:,:] = avg_color 
     return avg_color_img
 
-def avg_color(image, type_char = True):
+def avg_color(image):
     avg_color_row = np.average(image, axis=0)
     avg_color  = np.average(avg_color_row, axis=0)     
-    avg_color = np.floor(avg_color)
-    if type_char: avg_color[0], avg_color[1], avg_color[2] = chr(avg_color[0]), chr(avg_color[1]), chr(avg_color[2])
+    avg_color = avg_color.astype(int)
     return avg_color
 
 
-def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0), type_char = True): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
+def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0)): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
     colors = [[], [], [], []]# 0:top 1:bottom 2:left 3:right
 
     (vertical, horizontal, _) = image.shape
@@ -48,23 +47,23 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
         top_image_slice = image[0:(hor_scn_sqr_dims+extra_slice[0]), # vertical
                                     (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), #horizontal
                                     :]
-        colors[0].append(avg_color(top_image_slice, type_char))
+        colors[0].append(avg_color(top_image_slice))
 
         bottom_image_slice = image[(vertical-(hor_scn_sqr_dims+extra_slice[0])):vertical, # vertical
                                         (i*hor_scn_sqr_dims):((i+1)*hor_scn_sqr_dims), # horizontal
                                         :]
-        colors[1].append(avg_color(bottom_image_slice, type_char))
+        colors[1].append(avg_color(bottom_image_slice))
     
     for i in range(left_right_leds):
         left_image_slice = image[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                     0:(ver_scn_sqr_dims+extra_slice[1]), # horizontal
                                     :]
-        colors[2].append(avg_color(left_image_slice, type_char))
+        colors[2].append(avg_color(left_image_slice))
 
         right_image_slice = image[(i*ver_scn_sqr_dims):((i+1)*ver_scn_sqr_dims), # vertical 
                                         (horizontal-(ver_scn_sqr_dims+extra_slice[1])):horizontal, # horizontal
                                         :]
-        colors[3].append(avg_color(right_image_slice, type_char))
+        colors[3].append(avg_color(right_image_slice))
 
     return colors
 
@@ -72,8 +71,9 @@ def black_border_crop(image):
     avg_color_col = np.average(image, axis=1)
     (vertical, horizontal, _) = image.shape
     width = 0
+    zeros = np.zeros(3)
     for i in range(len(avg_color_col)):
-        if avg_color_col[i] == [0,0,0]:
+        if (avg_color_col[i] == zeros).all():
             width = i
         else:
             break    
@@ -106,26 +106,30 @@ def send(port, colors, order = [1, 2, 0, 3]):
                 write_ser(port, k)
 
 
-ESP32 = port("COM9")
-check_port(ESP32)
+# ESP32 = port("COM9")
+# check_port(ESP32)
 
-while(1):
-    string = read_ser(ESP32)
-    if (len(string)):
-        print(string)
+# while(1):
+#     string = read_ser(ESP32)
+#     if (len(string)):
+#         print(string)
     
-    cmd = input()
-    if (cmd):
-        write_ser(ESP32, cmd)
+#     cmd = input()
+#     if (cmd):
+#         write_ser(ESP32, cmd)
+
+while (1):
+    camera = dxcam.create(device_idx=0, output_idx=0)
+    # t1 = time.time()
+    image, dims = screenshot(camera)
+    image = black_border_crop(image)
+    colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+    # t2 = time.time()
+    # print(1/(t2-t1))
+    Image.fromarray(image).show()
+    time.sleep(3)
 
 
-# camera = dxcam.create(device_idx=0, output_idx=1)
-# t1 = time.time()
-# image, dims = screenshot(camera)
-# colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-# t2 = time.time()
-# print(1/(t2-t1))
-# Image.fromarray(image).show()
 # serial is very fast, no need to worry abot speed
 # baud rate is bits per second
 # topleds ~ 21
