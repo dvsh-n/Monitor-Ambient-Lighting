@@ -6,7 +6,6 @@
 #define LEDS 66
 
 uint8_t c;
-char led_color[LEDS][3];
 uint8_t led_idx = 0;
 uint8_t channel_idx = 0;
 bool full = false;
@@ -17,6 +16,7 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(921600);
   pinMode(onboard_led, OUTPUT);
+  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, LEDS);  // GRB ordering is typical
 }
 
 void loop() {
@@ -25,7 +25,6 @@ void loop() {
     c = Serial.read();
 
     if (full) {
-      memset(led_color, 0, sizeof(led_color));
       full = false;
       led_idx = -1; // -1 because the next if statement makes it 0
     }
@@ -37,11 +36,12 @@ void loop() {
       full = true;
     }
 
-    led_color[led_idx][channel_idx] = c;
+    leds[led_idx][channel_idx] = c;
     channel_idx++;
 
-    Serial.println(c);
+    //Serial.println(c);
   }
+  FastLED.show();
 
 }
 // void loop() { 

@@ -86,7 +86,7 @@ def write_ser_int(port, data, num_bytes_return = False):
 
 def read_ser(port, buffer = 255):
     string = port.read(buffer)
-    return string.decode('latin-1')
+    return string
 
 def check_port(COM):
     if COM.isOpen():
@@ -103,27 +103,32 @@ def send(port, colors, order = [1, 2, 0, 3]):
 ESP32 = port("COM9")
 check_port(ESP32)
 
+camera = dxcam.create(device_idx=0, output_idx=0)
+
 while(1):
-    string = read_ser(ESP32)
-    if (len(string)):
-        print(string)
+    image, dims = screenshot(camera)
+    image = black_border_crop(image)
+    colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+    Image.fromarray(image).show()
+    send(ESP32, colors)
+    time.sleep(3)
     
-    cmd = input()
-    if (cmd):
-        write_ser_int(ESP32, [225,225,225])
+# cmd = input()
+# if (cmd):
+#     write_ser_int(ESP32, [225,225,225])
 
+# string = read_ser(ESP32)
+# if (len(string)):
+#     print(string)
 
-# camera = dxcam.create(device_idx=0, output_idx=0)
 
 # while (1):
 #     # t1 = time.time()
-#     image, dims = screenshot(camera)
-#     image = black_border_crop(image)
-#     colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+
 #     # t2 = time.time()
 #     # print(1/(t2-t1))
-#     Image.fromarray(image).show()
-#     time.sleep(3)
+
+
 
 
 # serial is very fast, no need to worry abot speed
