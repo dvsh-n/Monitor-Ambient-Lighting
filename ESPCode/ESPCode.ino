@@ -1,12 +1,17 @@
+#include <FastLED.h>
+
+#define DATA_PIN 4
 #define MAX_BUFF_LEN 255
 #define onboard_led 2
 #define LEDS 66
 
-char c;
+uint8_t c;
 char led_color[LEDS][3];
 uint8_t led_idx = 0;
 uint8_t channel_idx = 0;
 bool full = false;
+
+CRGB leds[LEDS];
 
 void setup() {
   // put your setup code here, to run once:
@@ -32,12 +37,24 @@ void loop() {
       full = true;
     }
 
-    led_color[led_idx][channel_idx] = +c;
+    led_color[led_idx][channel_idx] = c;
     channel_idx++;
 
     Serial.println(c);
   }
-  if (led_color[1][2] == 225) digitalWrite(onboard_led, HIGH);
+
 }
+// void loop() { 
+//   // Turn the LED on, then pause
+//   leds[0].red = 0;
+//   leds[0].green = 255;;
+//   leds[0].blue = 0;
+//   FastLED.show();
+//   delay(500);
+//   // Now turn the LED off, then pause
+//   leds[0] = CRGB::Black;
+//   FastLED.show();
+//   delay(500);
+// }
 // Whenever gets new data, updates
 // Clears the array when new data comes

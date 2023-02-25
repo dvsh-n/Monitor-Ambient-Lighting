@@ -86,7 +86,7 @@ def write_ser_int(port, data, num_bytes_return = False):
 
 def read_ser(port, buffer = 255):
     string = port.read(buffer)
-    return string
+    return string.decode('latin-1')
 
 def check_port(COM):
     if COM.isOpen():
