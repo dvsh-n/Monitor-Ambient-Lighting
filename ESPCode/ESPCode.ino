@@ -20,26 +20,24 @@ void loop() {
     c = Serial.read();
 
     if (full) {
-      led_color = {0};
+      memset(led_color, 0, sizeof(led_color));
       full = false;
+      led_idx = -1; // -1 because the next if statement makes it 0
     }
-
     if (channel_idx == 3){
       channel_idx = 0;
       led_idx++;
     }
-    if (led_idx == LEDS) break;
+    if (channel_idx == 2 && led_idx == LEDS-1){
+      full = true;
+    }
 
     led_color[led_idx][channel_idx] = +c;
     channel_idx++;
 
-    if (channel_idx == 2 && led_idx = LEDS-1){
-      full = true;
-    }
-
     Serial.println(c);
   }
-  if (led_color[1][2] == 57) digitalWrite(onboard_led, HIGH);
+  if (led_color[1][2] == 9) digitalWrite(onboard_led, HIGH);
 }
 // Whenever gets new data, updates
 // Clears the array when new data comes

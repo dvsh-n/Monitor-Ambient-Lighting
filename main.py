@@ -65,19 +65,17 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
 
     return colors
 
-def black_border_crop(image, threshold = [10,10,10]):
+def black_border_crop(image, threshold = 10):
     avg_color_col = np.average(image, axis=1)
     (vertical, horizontal, _) = image.shape
     width = 0
-    threshold = np.array(threshold)
+    threshold = np.array([threshold, threshold, threshold])
     for i in range(len(avg_color_col)):
         if (avg_color_col[i] <= threshold).all():
             width = i
         else:
             break    
     return image[width:(vertical-width),:,:]   
-
-
 
 def port(COM):
     return serial.Serial(COM, 921600, timeout=1)
@@ -102,28 +100,30 @@ def send(port, colors, order = [1, 2, 0, 3]):
             write_ser(port, j)
 
 
-# ESP32 = port("COM9")
-# check_port(ESP32)
+ESP32 = port("COM9")
+check_port(ESP32)
 
-# while(1):
-#     string = read_ser(ESP32)
-#     if (len(string)):
-#         print(string)
+while(1):
+    string = read_ser(ESP32)
+    if (len(string)):
+        print(string)
     
-#     cmd = input()
-#     if (cmd):
-#         write_ser(ESP32, cmd)
-camera = dxcam.create(device_idx=0, output_idx=0)
+    cmd = input()
+    if (cmd):
+        write_ser(ESP32, cmd)
 
-while (1):
-    # t1 = time.time()
-    image, dims = screenshot(camera)
-    image = black_border_crop(image)
-    colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-    # t2 = time.time()
-    # print(1/(t2-t1))
-    Image.fromarray(image).show()
-    time.sleep(3)
+
+# camera = dxcam.create(device_idx=0, output_idx=0)
+
+# while (1):
+#     # t1 = time.time()
+#     image, dims = screenshot(camera)
+#     image = black_border_crop(image)
+#     colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+#     # t2 = time.time()
+#     # print(1/(t2-t1))
+#     Image.fromarray(image).show()
+#     time.sleep(3)
 
 
 # serial is very fast, no need to worry abot speed
