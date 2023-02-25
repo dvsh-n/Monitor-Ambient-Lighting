@@ -37,7 +37,7 @@ void loop() {
 
     Serial.println(c);
   }
-  if (led_color[1][2] == 9) digitalWrite(onboard_led, HIGH);
+  if (led_color[1][2] == 225) digitalWrite(onboard_led, HIGH);
 }
 // Whenever gets new data, updates
 // Clears the array when new data comes

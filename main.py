@@ -80,13 +80,13 @@ def black_border_crop(image, threshold = 10):
 def port(COM):
     return serial.Serial(COM, 921600, timeout=1)
 
-def write_ser(port, data, num_bytes_return = False):
+def write_ser_int(port, data, num_bytes_return = False):
     num_bytes = port.write(bytearray(data))
     if num_bytes_return: return num_bytes
 
 def read_ser(port, buffer = 255):
     string = port.read(buffer)
-    return string.decode()
+    return string
 
 def check_port(COM):
     if COM.isOpen():
@@ -97,7 +97,7 @@ def check_port(COM):
 def send(port, colors, order = [1, 2, 0, 3]):
     for i in order:
         for j in colors[i]:
-            write_ser(port, j)
+            write_ser_int(port, j)
 
 
 ESP32 = port("COM9")
@@ -110,7 +110,7 @@ while(1):
     
     cmd = input()
     if (cmd):
-        write_ser(ESP32, cmd)
+        write_ser_int(ESP32, [225,225,225])
 
 
 # camera = dxcam.create(device_idx=0, output_idx=0)
