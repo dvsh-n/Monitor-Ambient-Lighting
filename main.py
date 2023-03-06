@@ -15,7 +15,10 @@ left_right_leds = 12
 
 def screenshot(cam):
     image = cam.grab()
-    return image, image.shape
+    try:
+        return image, image.shape, False
+    except AttributeError:
+        return image, [[],[],[]], True
 
 def plot(image, axis = 'off'):
     plt.imshow(image)
@@ -103,15 +106,16 @@ def send(port, colors, order = [1, 2, 0, 3]):
 ESP32 = port("COM9")
 check_port(ESP32)
 
-camera = dxcam.create(device_idx=0, output_idx=0)
+camera = dxcam.create(device_idx=0, output_idx=1)
 
 while(1):
-    image, dims = screenshot(camera)
-    image = black_border_crop(image)
-    colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-    Image.fromarray(image).show()
-    send(ESP32, colors)
-    time.sleep(3)
+    image, dims, failure = screenshot(camera)
+    if not failure:
+        image = black_border_crop(image)
+        colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+        # Image.fromarray(image).show()
+        send(ESP32, colors)
+        time.sleep(0.01)
     
 # cmd = input()
 # if (cmd):
