@@ -58,3 +58,4 @@ void loop() {
 // }
 // Whenever gets new data, updates
 // Clears the array when new data comes
+// 150 LEDS
