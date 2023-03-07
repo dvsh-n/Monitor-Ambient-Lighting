@@ -81,7 +81,7 @@ def black_border_crop(image, threshold = 10):
     return image[width:(vertical-width),:,:]   
 
 def port(COM):
-    return serial.Serial(COM, 921600, timeout=1)
+    return serial.Serial(COM, 115200, timeout=1)
 
 def write_ser_int(port, data, num_bytes_return = False):
     num_bytes = port.write(bytearray(data))
@@ -103,20 +103,27 @@ def send(port, colors, order = [1, 2, 0, 3]):
             write_ser_int(port, j)
 
 
-ESP32 = port("COM9")
-check_port(ESP32)
+Arduino = port("COM14")
+check_port(Arduino)
 
 camera = dxcam.create(device_idx=0, output_idx=1)
 
+# while(1):
+    # image, dims, failure = screenshot(camera)
+    # if not failure:
+    #     image = black_border_crop(image)
+    #     colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+    #     print(colors)
+    #     send(Arduino, colors)
+    #     print(read_ser(Arduino))
+    #     time.sleep(0.01)
+
 while(1):
-    image, dims, failure = screenshot(camera)
-    if not failure:
-        image = black_border_crop(image)
-        colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-        # Image.fromarray(image).show()
-        send(ESP32, colors)
-        time.sleep(0.01)
-    
+    val = input("Here:")
+    print(val.encode())
+    Arduino.write(val.encode())
+    print(read_ser(Arduino))
+
 # cmd = input()
 # if (cmd):
 #     write_ser_int(ESP32, [225,225,225])
@@ -131,7 +138,7 @@ while(1):
 
 #     # t2 = time.time()
 #     # print(1/(t2-t1))
-
+# Image.fromarray(image).show()
 
 
 

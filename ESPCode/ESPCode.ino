@@ -1,7 +1,6 @@
 #include <FastLED.h>
 
-#define DATA_PIN 4
-#define MAX_BUFF_LEN 255
+#define DATA_PIN 5
 #define onboard_led 2
 #define LEDS 66
 
@@ -12,15 +11,16 @@ bool full = false;
 
 CRGB leds[LEDS];
 
+uint8_t leds2[LEDS][3] = {0};
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(921600);
-  pinMode(onboard_led, OUTPUT);
+  Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
   FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, LEDS);  // GRB ordering is typical
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+
   while (Serial.available()){
     c = Serial.read();
 
@@ -37,18 +37,25 @@ void loop() {
     }
 
     leds[led_idx][channel_idx] = c;
+    leds2[led_idx][channel_idx] = +c;
     channel_idx++;
 
-    //Serial.println(c);
+    Serial.println(+c);
+
+    if (leds2[0][0] == 60){
+      digitalWrite(LED_BUILTIN, HIGH);
+    }
+
+    FastLED.show();
   }
   FastLED.show();
 
 }
 // void loop() { 
 //   // Turn the LED on, then pause
-//   leds[0].red = 0;
-//   leds[0].green = 255;;
-//   leds[0].blue = 0;
+//   leds[0].red = 18;
+//   leds[0].green = 200;
+//   leds[0].blue = 150;
 //   FastLED.show();
 //   delay(500);
 //   // Now turn the LED off, then pause
