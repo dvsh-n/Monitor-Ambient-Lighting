@@ -1,5 +1,3 @@
-#include <FastLED.h>
-
 #define DATA_PIN 5
 #define onboard_led 2
 #define LEDS 66
@@ -9,14 +7,11 @@ uint8_t led_idx = 0;
 uint8_t channel_idx = 0;
 bool full = false;
 
-CRGB leds[LEDS];
-
 uint8_t leds2[LEDS][3] = {0};
 
 void setup() {
   Serial.begin(115200);
   pinMode(LED_BUILTIN, OUTPUT);
-  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, LEDS);  // GRB ordering is typical
 }
 
 void loop() {
@@ -36,19 +31,15 @@ void loop() {
       full = true;
     }
 
-    leds[led_idx][channel_idx] = c;
-    leds2[led_idx][channel_idx] = +c;
+    leds2[led_idx][channel_idx] = c;
     channel_idx++;
 
-    Serial.println(+c);
+    Serial.println(c);
 
-    if (leds2[0][0] == 60){
+    if (leds2[0][0] == 57){
       digitalWrite(LED_BUILTIN, HIGH);
     }
-
-    FastLED.show();
   }
-  FastLED.show();
 
 }
 // void loop() { 
