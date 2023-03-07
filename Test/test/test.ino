@@ -36,7 +36,7 @@ void loop() {
 
     Serial.println(c);
 
-    if (leds2[0][0] == 57){
+    if (leds2[3][2] == 57){
       digitalWrite(LED_BUILTIN, HIGH);
     }
   }

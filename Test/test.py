@@ -23,5 +23,5 @@ check_port(Arduino)
 while(1):
     val = str(input("Here:"))
     print(val.encode())
-    Arduino.write([90, 57, 57])
+    Arduino.write([57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 50])
     print(read_ser(Arduino))
