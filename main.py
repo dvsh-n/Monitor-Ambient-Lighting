@@ -1,5 +1,4 @@
 import numpy as np
-
 from matplotlib import pyplot as plt
 import time
 import dxcam
@@ -80,6 +79,13 @@ def black_border_crop(image, threshold = 10):
             break    
     return image[width:(vertical-width),:,:]   
 
+def reduce_dims(colors, order = [1, 2, 0, 3]):
+    result = []
+    for i in order:
+        result.append(colors[i])
+    return result.flatten()
+
+
 def port(COM):
     return serial.Serial(COM, 115200, timeout=1)
 
@@ -117,12 +123,6 @@ camera = dxcam.create(device_idx=0, output_idx=1)
     #     send(Arduino, colors)
     #     print(read_ser(Arduino))
     #     time.sleep(0.01)
-
-while(1):
-    val = input("Here:")
-    print(val.encode())
-    Arduino.write(val.encode())
-    print(read_ser(Arduino))
 
 # cmd = input()
 # if (cmd):

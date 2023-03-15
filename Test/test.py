@@ -20,8 +20,16 @@ def check_port(COM):
 Arduino = port("COM14")
 check_port(Arduino)
 
-while(1):
-    val = str(input("Here:"))
-    print(val.encode())
-    Arduino.write([57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 50])
-    print(read_ser(Arduino))
+while(1): # loop runs when serial data is received
+    if Arduino.in_waiting:
+        Arduino.flush()
+        result = read_ser(Arduino)
+        # if result == b'bgn':
+        #     Arduino.write([57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57, 57])
+        print(result)
+        Arduino.flush()
+
+
+# Serial.in_waiting returns the number of bytes in the input buffer
+# val = str(input("Here:"))
+# print(val.encode())
