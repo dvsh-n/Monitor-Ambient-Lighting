@@ -1,6 +1,6 @@
 #include <FastLED.h>
 
-#define DATA_PIN 5
+#define DATA_PIN 4
 #define onboard_led 2
 #define LEDS 66
 
