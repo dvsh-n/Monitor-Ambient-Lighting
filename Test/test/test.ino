@@ -3,7 +3,7 @@
 
 #define DATA_PIN 4
 #define onboard_led 2
-#define LEDS 4
+#define LEDS 66
 
 CRGB leds[LEDS];
 uint8_t leds2[LEDS][3] = {0};

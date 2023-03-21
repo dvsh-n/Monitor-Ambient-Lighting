@@ -67,7 +67,7 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
 
     return colors
 
-def black_border_crop(image, threshold = 10):
+def black_border_crop(image, threshold = 10, crop_limit = 200):
     avg_color_col = np.average(image, axis=1)
     (vertical, horizontal, _) = image.shape
     width = 0
@@ -75,15 +75,14 @@ def black_border_crop(image, threshold = 10):
     for i in range(len(avg_color_col)):
         if (avg_color_col[i] <= threshold).all():
             width = i
-        else:
+        if width <= crop_limit:
             break    
     return image[width:(vertical-width),:,:]   
 
-def reduce_dims(colors, order = [1, 2, 0, 3]):
-    result = []
-    for i in order:
-        result.append(colors[i])
-    return result.flatten()
+def reorder(colors, order = [1, 2, 0, 3]):
+    # order = np.array(order)
+    # order.astype(int)
+    return np.array([colors[i] for i in order])
 
 
 def port(COM):
@@ -109,20 +108,20 @@ def send(port, colors, order = [1, 2, 0, 3]):
             write_ser_int(port, j)
 
 
-Arduino = port("COM14")
-check_port(Arduino)
+ESP32 = port("COM8")
+check_port(ESP32)
 
 camera = dxcam.create(device_idx=0, output_idx=1)
 
-# while(1):
-    # image, dims, failure = screenshot(camera)
-    # if not failure:
-    #     image = black_border_crop(image)
-    #     colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-    #     print(colors)
-    #     send(Arduino, colors)
-    #     print(read_ser(Arduino))
-    #     time.sleep(0.01)
+while(1):
+    image, dims, failure = screenshot(camera)
+    if not failure:
+        image = black_border_crop(image)
+        colors = colors_from_img(top_bottom_leds, left_right_leds, image)
+        colors = reorder(colors)
+        colors = colors.flatten()
+        print(colors)
+        time.sleep(100)
 
 # cmd = input()
 # if (cmd):
