@@ -51,6 +51,7 @@ void loop() {
 
 
 }
+// + operater is the unary operator
 // void loop() { 
 //   // Turn the LED on, then pause
 //   leds[0].red = 18;

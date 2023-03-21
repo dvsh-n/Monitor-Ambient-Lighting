@@ -20,7 +20,7 @@ def check_port(COM):
 Arduino = port("COM8")
 check_port(Arduino)
 
-Arduino.write(bytearray([57,57,57]))
+Arduino.write(bytearray([0,0,0]))
 print("done")
 Arduino.close()
 

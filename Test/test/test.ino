@@ -27,6 +27,7 @@ void setup() {
   Serial.begin(115200);
   SerialBT.begin("ESP32test"); //Bluetooth device name
   Serial.println("The device started, now you can pair it with bluetooth!");
+  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, LEDS);  // GRB ordering is typical
 }
 
 void loop() {
@@ -46,11 +47,15 @@ void loop() {
     }
 
     leds[led_idx][channel_idx] = c;
-    leds2[led_idx][channel_idx] = +c;
+    leds2[led_idx][channel_idx] = c;
     Serial.print("led idx: "); Serial.print(led_idx); Serial.print(" ");
     Serial.print("channel idx: "); Serial.print(channel_idx); Serial.print(" ");
     Serial.println(leds2[led_idx][channel_idx]);
     channel_idx++;
+  }
+  if (Serial.available()){
+    FastLED.show();
+    delay(20);
   }
 
   // if (Serial.available()) {
