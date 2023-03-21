@@ -54,9 +54,9 @@ void loop() {
     Serial.println(leds2[led_idx][channel_idx]);
     channel_idx++;
   }
-  if (Serial.available()){
+  if (full){
     FastLED.show();
-    delay(20);
+    delay(10);
   }
 
   // if (Serial.available()) {
