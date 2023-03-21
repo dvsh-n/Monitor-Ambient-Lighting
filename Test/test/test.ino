@@ -37,6 +37,7 @@ void loop() {
     if (full) {
       full = false;
       led_idx = -1; // -1 because the next if statement makes it 0
+      FastLED.clearData();
     }
     if (channel_idx == 3){
       channel_idx = 0;
