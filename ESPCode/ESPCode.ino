@@ -48,7 +48,7 @@ void loop() {
 
     FastLED.show();
   }
-  FastLED.show();
+
 
 }
 // void loop() { 
