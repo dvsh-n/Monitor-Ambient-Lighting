@@ -60,7 +60,7 @@ void loop() {
   }
 
   // if (Serial.available()) {
-  //   SerialBT.write(Serial.read());
+  //   SerialBT.write(Serial.reaMd());
   // }
   // if (SerialBT.available()) {
   //   Serial.write(SerialBT.read());

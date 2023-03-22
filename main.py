@@ -120,18 +120,22 @@ def send(port, colors, order = [1, 2, 0, 3]):
 ESP32 = port("COM8")
 check_port(ESP32)
 
-camera = dxcam.create(device_idx=0, output_idx=1)
+camera = dxcam.create(device_idx=0, output_idx=0)
 
 while(1):
     image, dims, failure = screenshot(camera)
     if not failure:
-        image = black_border_crop(image)
+        # image = black_border_crop(image)
         colors = colors_from_img(top_bottom_leds, left_right_leds, image)
         print(colors)
         colors = flatten(colors)
         print('\n')
         print(colors)
-        time.sleep(100)
+        print('\n')
+        print(len(colors))
+        ESP32.write(bytearray(colors))
+        time.sleep(0.5)
+
 
 
 # Image.fromarray(image).show()
