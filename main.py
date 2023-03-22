@@ -84,10 +84,14 @@ def black_border_crop(image, threshold = 10, crop_limit = 200):
             break    
     return image[width:(vertical-width),:,:]   
 
-def reorder(colors, order = [1, 2, 0, 3]):
-    # order = np.array(order)
-    # order.astype(int)
-    return np.array([colors[i] for i in order])
+def flatten(colors):
+    res = []
+    for bar in colors: #left bar, bottom bar, etc
+        for rgb in bar:
+            res.append(rgb[0])
+            res.append(rgb[1])
+            res.append(rgb[2])
+    return res
 
 
 def port(COM):
@@ -123,29 +127,14 @@ while(1):
     if not failure:
         image = black_border_crop(image)
         colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-        colors = reorder(colors)
-        colors = colors.flatten()
+        print(colors)
+        colors = flatten(colors)
+        print('\n')
         print(colors)
         time.sleep(100)
 
-# cmd = input()
-# if (cmd):
-#     write_ser_int(ESP32, [225,225,225])
 
-# string = read_ser(ESP32)
-# if (len(string)):
-#     print(string)
-
-
-# while (1):
-#     # t1 = time.time()
-
-#     # t2 = time.time()
-#     # print(1/(t2-t1))
 # Image.fromarray(image).show()
-
-
-
 # serial is very fast, no need to worry abot speed
 # baud rate is bits per second
 # topleds ~ 21
