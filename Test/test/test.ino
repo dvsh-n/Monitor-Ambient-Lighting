@@ -6,7 +6,7 @@
 #define LEDS 66
 
 CRGB leds[LEDS];
-uint8_t leds2[LEDS][3] = {0};
+// uint8_t leds2[LEDS][3] = {0};
 
 uint8_t c;
 uint8_t led_idx = 0;
@@ -48,15 +48,15 @@ void loop() {
     }
 
     leds[led_idx][channel_idx] = c;
-    leds2[led_idx][channel_idx] = c;
-    Serial.print("led idx: "); Serial.print(led_idx); Serial.print(" ");
-    Serial.print("channel idx: "); Serial.print(channel_idx); Serial.print(" ");
-    Serial.println(leds2[led_idx][channel_idx]);
+    // leds2[led_idx][channel_idx] = c;
+    // Serial.print("led idx: "); Serial.print(led_idx); Serial.print(" ");
+    // Serial.print("channel idx: "); Serial.print(channel_idx); Serial.print(" ");
+    // Serial.println(leds2[led_idx][channel_idx]);
     channel_idx++;
   }
   if (full){
     FastLED.show();
-    delay(10);
+    delay(5);
   }
 
   // if (Serial.available()) {

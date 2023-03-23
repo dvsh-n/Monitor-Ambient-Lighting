@@ -123,19 +123,23 @@ check_port(ESP32)
 camera = dxcam.create(device_idx=0, output_idx=0)
 
 while(1):
+    t1 = time.time()
     image, dims, failure = screenshot(camera)
     if not failure:
         image = black_border_crop(image)
-        Image.fromarray(image).show()
+        # Image.fromarray(image).show()
         colors = colors_from_img_squares(top_bottom_leds, left_right_leds, image)
         # print(colors)
-        # colors = flatten(colors)
+        colors = flatten(colors)
         # print('\n')
         # print(colors)
         # print('\n')
         # print(len(colors))
-        # ESP32.write(bytearray(colors))
-        time.sleep(10)
+        ESP32.write(bytearray(colors))
+        time.sleep(0.5)
+    t2 = time.time()
+    print(1/(t2-t1))
+    print('\n')
 
 
 
