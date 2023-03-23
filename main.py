@@ -136,10 +136,11 @@ while(1):
         # print('\n')
         # print(len(colors))
         ESP32.write(bytearray(colors))
-        time.sleep(0.5)
+        time.sleep(0.1)
     t2 = time.time()
-    print(1/(t2-t1))
-    print('\n')
+    if not failure:
+        print(1/(t2-t1))
+        print('\n')
 
 
 
