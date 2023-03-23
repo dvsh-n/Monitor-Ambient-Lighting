@@ -36,7 +36,7 @@ def avg_color(image):
     return avg_color
 
 
-def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0), order = [1,2,0,3]): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
+def colors_from_img_squares(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0), order = [1,2,0,3]): # extra_slice = (# extra vert px for hor, # extra hor px for vert)
     colors = [[], [], [], []]# 0:top 1:bottom 2:left 3:right
 
     (vertical, horizontal, _) = image.shape
@@ -72,16 +72,16 @@ def colors_from_img(top_bottom_leds, left_right_leds, image, extra_slice = (0, 0
 
     return colors
 
-def black_border_crop(image, threshold = 10, crop_limit = 200):
+def black_border_crop(image, threshold = 10, vert_crop_limit = 200):
     avg_color_col = np.average(image, axis=1)
     (vertical, horizontal, _) = image.shape
     width = 0
     threshold = np.array([threshold, threshold, threshold])
     for i in range(len(avg_color_col)):
-        if (avg_color_col[i] <= threshold).all():
+        if (avg_color_col[i] <= threshold).all() and i <= vert_crop_limit:
             width = i
-        if width <= crop_limit:
-            break    
+        else:
+            break
     return image[width:(vertical-width),:,:]   
 
 def flatten(colors):
@@ -125,16 +125,17 @@ camera = dxcam.create(device_idx=0, output_idx=0)
 while(1):
     image, dims, failure = screenshot(camera)
     if not failure:
-        # image = black_border_crop(image)
-        colors = colors_from_img(top_bottom_leds, left_right_leds, image)
-        print(colors)
-        colors = flatten(colors)
-        print('\n')
-        print(colors)
-        print('\n')
-        print(len(colors))
-        ESP32.write(bytearray(colors))
-        time.sleep(0.5)
+        image = black_border_crop(image)
+        Image.fromarray(image).show()
+        colors = colors_from_img_squares(top_bottom_leds, left_right_leds, image)
+        # print(colors)
+        # colors = flatten(colors)
+        # print('\n')
+        # print(colors)
+        # print('\n')
+        # print(len(colors))
+        # ESP32.write(bytearray(colors))
+        time.sleep(10)
 
 
 
